@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.StoreAddressAssociationDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.StoreAddressAssociation">
+
+        <result column="isDeleted" property="isDeleted" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <association column="addressId" property="address"
+                     select="com.xiaoshi.order.dao.AddressDao.select">
+        </association>
+        <association column="storeId" property="store"
+                     select="com.xiaoshi.order.dao.StoreDao.select">
+        </association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select * from storeaddressassociation where storeId = #{storeId}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select *
+      from storeaddressassociation
+    </select>
+
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.StoreAddressAssociation"
+            keyProperty="storeId">
+        insert into storeaddressassociation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="isDeleted != null">
+                isDeleted,
+            </if>
+            <if test="address != null">
+                addressId,
+            </if>
+            <if test="store != null">
+                storeId,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="isDeleted != null">
+                #{isDeleted},
+            </if>
+            <if test="address != null">
+                #{address.addressId},
+            </if>
+            <if test="store != null">
+                #{store.storeId},
+            </if>
+
+        </trim>
+    </insert>
+
+    <select id="getStoreAddressAssociationByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from storeaddressassociation where 1=1
+        <if test="storeId!=null">
+            and storeId=#{storeId}
+        </if>
+        <if test="addressId!=null">
+            and addressId=#{addressId}
+        </if>
+    </select>
+
+    <update id="updateStoreAddressAssociation" parameterType="com.xiaoshi.order.pojo.entity.StoreAddressAssociation">
+        update storeaddressassociation
+        <set>
+            <if test="isDeleted != null">
+                isDeleted=#{isDeleted},
+            </if>
+            <if test="address != null">
+                addressId= #{address.addressId},
+            </if>
+
+        </set>
+        where storeId = #{store.storeId}
+    </update>
+</mapper>

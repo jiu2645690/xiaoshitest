@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.LogDao">
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.Log">
+        <id column="logId" property="logId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="logType" property="logType" jdbcType="NUMERIC" javaType="java.lang.Integer"/>
+        <result column="createdAt" property="createdAt" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <result column="logContent" property="logContent" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="peopleType" property="peopleType" jdbcType="NUMERIC" javaType="java.lang.Integer"/>
+        <result column="peopleId" property="peopleId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="ip" property="ip" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="isRepair" property="isRepair" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <result column="repairConten" property="repairConten" jdbcType="VARCHAR" javaType="java.lang.String"/>
+    </resultMap>
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select logId, logType, createdAt, logContent, peopleType, peopleId, ip,isRepair,repairConten
+      from log where logId = #{id}
+    </select>
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.Log"
+            keyProperty="logId">
+        insert into log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="logType != null">
+                logType,
+            </if>
+            <if test="createdAt != null">
+                createdAt,
+            </if>
+            <if test="logContent != null">
+                logContent,
+            </if>
+            <if test="peopleType != null">
+                peopleType,
+            </if>
+            <if test="peopleId != null">
+                peopleId,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
+            <if test="isRepair != null">
+                isRepair,
+            </if>
+            <if test="repairConten != null">
+                repairConten,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="logType != null">
+                #{logType},
+            </if>
+            <if test="createdAt != null">
+                #{createdAt},
+            </if>
+            <if test="logContent != null">
+                #{logContent},
+            </if>
+            <if test="peopleType != null">
+                #{peopleType},
+            </if>
+            <if test="peopleId != null">
+                #{peopleId},
+            </if>
+            <if test="ip != null">
+                #{ip},
+            </if>
+            <if test="isRepair != null">
+                #{isRepair},
+            </if>
+            <if test="repairConten != null">
+                #{repairConten},
+            </if>
+        </trim>
+    </insert>
+</mapper>

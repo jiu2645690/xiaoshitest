@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.FoodItemTemplateDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.FoodItemTemplate">
+
+        <id column="foodItemTemplateId" property="foodItemTemplateId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="foodItemTemplateName" property="foodItemTemplateName" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="createdAt" property="createdAt" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+        <result column="isDeleted" property="isDeleted" jdbcType="BIT" javaType="java.lang.Boolean"/>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select *
+      from fooditemtemplate where foodItemTemplateId = #{id}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select * from fooditemtemplate
+    </select>
+
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.FoodItemTemplate"
+            keyProperty="foodItemTemplateId">
+        insert into fooditemtemplate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="foodItemTemplateName != null">
+                foodItemTemplateName,
+            </if>
+            <if test="createdAt != null">
+                createdAt,
+            </if>
+            <if test="isDeleted != null">
+                isDeleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="foodItemTemplateName != null">
+                #{foodItemTemplateName},
+            </if>
+            <if test="createdAt != null">
+                #{createdAt},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getFoodItemTemplateByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from fooditemtemplate where 1=1
+        <if test="foodItemTemplateName != null">
+           and foodItemTemplateName= #{foodItemTemplateName},
+        </if>
+        <if test="store != null">
+            and foodItemTemplateId= #{foodItemTemplateId},
+        </if>
+
+    </select>
+
+    <update id="updateFoodItemTemplate" parameterType="com.xiaoshi.order.pojo.entity.FoodItemTemplate">
+         update fooditemtemplate
+        <set>
+            <if test="foodItemTemplateName != null">
+                foodItemTemplateName= #{foodItemTemplateName},
+            </if>
+            <if test="createdAt != null">
+                createdAt= #{createdAt},
+            </if>
+            <if test="isDeleted != null">
+                isDeleted=#{isDeleted},
+            </if>
+        </set>
+        where foodItemTemplateId = #{foodItemTemplateId}
+    </update>
+</mapper>

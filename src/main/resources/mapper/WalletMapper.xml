@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.WalletDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.Wallet">
+        <id column="walletId" property="walletId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="walleType" property="walleType" jdbcType="BIGINT" javaType="java.lang.Integer"/>
+        <result column="peopleType" property="peopleType" jdbcType="BIGINT" javaType="java.lang.Integer"/>
+        <result column="peopleId" property="peopleId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="amount" property="amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+        <result column="createdAt" property="createdAt" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <result column="lastUpdatedAt" property="lastUpdatedAt" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <result column="isDeleted" property="isDeleted" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <association column="transcationId" property="transcation"
+                     select="com.xiaoshi.order.dao.TranscationDao.select">
+        </association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select * from wallet where walletId = #{walletId}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select * from wallet
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.Wallet"
+            keyProperty="walletId">
+        insert into wallet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+
+            <if test="walleType != null">
+                walleType,
+            </if>
+            <if test="peopleType != null">
+                peopleType,
+            </if>
+            <if test="peopleId != null">
+                peopleId,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="createdAt != null">
+                createdAt,
+            </if>
+            <if test="lastUpdatedAt != null">
+                lastUpdatedAt,
+            </if>
+            <if test="isDeleted != null">
+                isDeleted,
+            </if>
+            <if test="transcation != null">
+                transcationId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="walleType != null">
+                #{walleType},
+            </if>
+            <if test="peopleType != null">
+                #{peopleType},
+            </if>
+            <if test="peopleId != null">
+                #{peopleId},
+            </if>
+            <if test="amount != null">
+                #{amount},
+            </if>
+            <if test="createdAt != null">
+                #{createdAt},
+            </if>
+            <if test="lastUpdatedAt != null">
+                #{lastUpdatedAt},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted},
+            </if>
+            <if test="transcation != null">
+                #{transcation.transcationId},
+            </if>
+
+        </trim>
+    </insert>
+
+    <select id="getWalletByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from wallet where 1=1
+        <if test="walleType != null">
+            and walleType=#{walleType}
+        </if>
+        <if test="peopleType != null">
+            and peopleType=#{peopleType}
+        </if>
+        <if test="peopleId != null">
+            and peopleId=#{peopleId}
+        </if>
+        <if test="amount != null">
+            and amount=#{amount}
+        </if>
+        <if test="createdAt != null">
+            and createdAt=#{createdAt}
+        </if>
+        <if test="afterDate != null">
+            and  #{afterDate} > createdAt
+        </if>
+        <if test="frontDate != null">
+            and  createdAt >= #{frontDate}
+        </if>
+        <if test="lastUpdatedAt != null">
+            and lastUpdatedAt=#{lastUpdatedAt}
+        </if>
+        <if test="isDeleted != null">
+            and isDeleted=#{isDeleted}
+        </if>
+        <if test="transcationId != null">
+            and transcationId=#{transcationId}
+        </if>
+
+    </select>
+
+    <update id="updateWallet" parameterType="com.xiaoshi.order.pojo.entity.Wallet">
+        update wallet
+        <set>
+            <if test="walleType != null">
+                 walleType=#{walleType},
+            </if>
+            <if test="peopleType != null">
+                 peopleType=#{peopleType},
+            </if>
+            <if test="peopleId != null">
+                 peopleId=#{peopleId},
+            </if>
+            <if test="amount != null">
+                 amount=#{amount},
+            </if>
+            <if test="createdAt != null">
+                 createdAt=#{createdAt},
+            </if>
+            <if test="lastUpdatedAt != null">
+                 lastUpdatedAt=#{lastUpdatedAt},
+            </if>
+            <if test="isDeleted != null">
+                 isDeleted=#{isDeleted},
+            </if>
+            <if test="transcation != null">
+                 transcationId=#{transcation.transcationId},
+            </if>
+        </set>
+        where walletId = #{walletId}
+    </update>
+
+</mapper>

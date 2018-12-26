@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.CustomerDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.Customer">
+
+        <id column="customerId" property="customerId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="phoneNumber" property="phoneNumber" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="email" property="email" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="wechatOpenid" property="wechatOpenid" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="phoneNumberIsValidated" property="phoneNumberIsValidated" jdbcType="VARCHAR"
+                javaType="java.lang.String"/>
+        <result column="emailIsValidated" property="emailIsValidated" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="wechatOpenidIsValidated" property="wechatOpenidIsValidated" jdbcType="VARCHAR"
+                javaType="java.lang.String"/>
+        <result column="createdAt" property="createdAt" jdbcType="VARCHAR" javaType="java.sql.Timestamp"/>
+        <result column="nickName" property="nickName" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="firstName" property="firstName" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="lastName" property="lastName" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR" javaType="java.lang.Boolean"/>
+        <result column="balance" property="balance" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+        <association column="addressId" property="address"
+                     select="com.xiaoshi.order.dao.AddressDao.select">
+        </association>
+        <association property="picture" column="avatarPictureId"
+                     select="com.xiaoshi.order.dao.PictureDao.select">
+        </association>
+
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select customerId, phoneNumber, email, wechatOpenid, phoneNumberIsValidated, emailIsValidated,
+               wechatOpenidIsValidated, avatarPictureId,createdAt, nickName, firstName, lastName,
+               sex, balance, addressId
+      from customer where customerId = #{id}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select customerId, phoneNumber, email, wechatOpenid, phoneNumberIsValidated, emailIsValidated,
+               wechatOpenidIsValidated, avatarPictureId,createdAt, nickName, firstName, lastName,
+               sex, balance, addressId
+      from customer
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.Customer"
+            keyProperty="customerId">
+        insert into customer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="phoneNumber != null">
+                phoneNumber,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="wechatOpenid != null">
+                wechatOpenid,
+            </if>
+            <if test="phoneNumberIsValidated != null">
+                phoneNumberIsValidated,
+            </if>
+            <if test="emailIsValidated != null">
+                emailIsValidated,
+            </if>
+            <if test="wechatOpenidIsValidated != null">
+                wechatOpenidIsValidated,
+            </if>
+            <if test="picture != null">
+                avatarPictureId,
+            </if>
+            <if test="createdAt != null">
+                createdAt,
+            </if>
+            <if test="nickName != null">
+                nickName,
+            </if>
+            <if test="firstName != null">
+                firstName,
+            </if>
+            <if test="lastName != null">
+                lastName,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="balance != null">
+                balance,
+            </if>
+            <if test="address != null">
+                addressId,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="phoneNumber != null">
+                #{phoneNumber},
+            </if>
+            <if test="email != null">
+                #{email},
+            </if>
+            <if test="wechatOpenid != null">
+                #{wechatOpenid},
+            </if>
+            <if test="phoneNumberIsValidated != null">
+                #{phoneNumberIsValidated},
+            </if>
+            <if test="emailIsValidated != null">
+                #{emailIsValidated},
+            </if>
+            <if test="wechatOpenidIsValidated != null">
+                #{wechatOpenidIsValidated},
+            </if>
+            <if test="picture != null">
+                #{picture.pictureId},
+            </if>
+            <if test="createdAt != null">
+                #{createdAt},
+            </if>
+            <if test="nickName != null">
+                #{nickName},
+            </if>
+            <if test="firstName != null">
+                #{firstName},
+            </if>
+            <if test="lastName != null">
+                #{lastName},
+            </if>
+            <if test="sex != null">
+                #{sex},
+            </if>
+            <if test="balance != null">
+                #{balance},
+            </if>
+            <if test="address != null">
+                #{address.addressId},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateCustomer" parameterType="com.xiaoshi.order.pojo.entity.Customer">
+        update customer
+        <set>
+            <if test="phoneNumber != null">
+                phoneNumber=#{phoneNumber},
+            </if>
+            <if test="email != null">
+                email=#{email},
+            </if>
+            <if test="wechatOpenid != null">
+                wechatOpenid= #{wechatOpenid},
+            </if>
+            <if test="phoneNumberIsValidated != null">
+                phoneNumberIsValidated=#{phoneNumberIsValidated},
+            </if>
+            <if test="emailIsValidated != null">
+                emailIsValidated= #{emailIsValidated},
+            </if>
+            <if test="wechatOpenidIsValidated != null">
+                wechatOpenidIsValidated= #{wechatOpenidIsValidated},
+            </if>
+            <if test="createdAt != null">
+                createdAt= #{createdAt},
+            </if>
+            <if test="nickName != null">
+                nickName= #{nickName},
+            </if>
+            <if test="firstName != null">
+                firstName= #{firstName},
+            </if>
+            <if test="lastName != null">
+                lastName= #{lastName},
+            </if>
+            <if test="sex != null">
+                sex= #{sex},
+            </if>
+            <if test="balance != null">
+                balance= #{balance},
+            </if>
+            <if test="address != null">
+                addressId= #{address.addressId},
+            </if>
+        </set>
+        where customerId = #{customerId}
+    </update>
+    <select id="getCustomerCount" parameterType="java.util.Map" resultType="Integer">
+        select COUNT(*) from customer where 1=1
+        <if test="phoneNumber!=null">
+            and phoneNumber=#{phoneNumber}
+        </if>
+        <if test="email!=null">
+            and email=#{email}
+        </if>
+        <if test="wechatOpenid!=null">
+            and wechatOpenid=#{wechatOpenid}
+        </if>
+        <if test="nickName!=null">
+            and nickName=#{nickName}
+        </if>
+
+    </select>
+
+    <select id="getCustomerByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from customer where 1=1
+        <if test="phoneNumber!=null">
+            and phoneNumber=#{phoneNumber}
+        </if>
+        <if test="email!=null">
+            and email=#{email}
+        </if>
+        <if test="wechatOpenid!=null">
+            and wechatOpenid=#{wechatOpenid}
+        </if>
+        <if test="nickName!=null">
+            and nickName=#{nickName}
+        </if>
+
+    </select>
+
+</mapper>

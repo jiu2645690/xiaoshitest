@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.ReviewDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.Review">
+
+        <id column="reviewId" property="reviewId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="serviceScore" property="serviceScore" jdbcType="DOUBLE" javaType="java.lang.Double"/>
+        <result column="weightScore" property="weightScore" jdbcType="DOUBLE" javaType="java.lang.Double"/>
+        <result column="tasteScore" property="tasteScore" jdbcType="DOUBLE" javaType="java.lang.Double"/>
+        <result column="avgScore" property="avgScore" jdbcType="DOUBLE" javaType="java.lang.Double"/>
+        <result column="scoreContent" property="scoreContent" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="reviewTime" property="reviewTime" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <result column="isAutoReview" property="isAutoReview" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <result column="isDeleted" property="isDeleted" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <association column="customerId" property="customer"
+                     select="com.xiaoshi.order.dao.CustomerDao.select">
+        </association>
+        <association column="orderId" property="order"
+                     select="com.xiaoshi.order.dao.OrderDao.select">
+        </association>
+        <association column="storeId" property="store"
+                     select="com.xiaoshi.order.dao.StoreDao.select">
+        </association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select * from review where reviewId = #{id}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select *
+      from review
+    </select>
+
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.Review"
+            keyProperty="reviewId">
+        insert into review
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serviceScore != null">
+                serviceScore,
+            </if>
+            <if test="weightScore != null">
+                weightScore,
+            </if>
+            <if test="avgScore != null">
+                avgScore,
+            </if>
+            <if test="tasteScore != null">
+                tasteScore,
+            </if>
+            <if test="scoreContent != null">
+                scoreContent,
+            </if>
+            <if test="reviewTime != null">
+                reviewTime,
+            </if>
+            <if test="isAutoReview != null">
+                isAutoReview,
+            </if>
+            <if test="isDeleted != null">
+                isDeleted,
+            </if>
+            <if test="store != null">
+                storeId,
+            </if>
+            <if test="customer != null">
+                customerId,
+            </if>
+            <if test="order != null">
+                orderId,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serviceScore != null">
+                #{serviceScore},
+            </if>
+            <if test="weightScore != null">
+                #{weightScore},
+            </if>
+            <if test="avgScore != null">
+                #{avgScore},
+            </if>
+            <if test="tasteScore != null">
+                #{tasteScore},
+            </if>
+            <if test="scoreContent != null">
+                #{scoreContent},
+            </if>
+            <if test="reviewTime != null">
+                #{reviewTime},
+            </if>
+            <if test="isAutoReview != null">
+                #{isAutoReview},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted},
+            </if>
+            <if test="store != null">
+                #{store.storeId},
+            </if>
+            <if test="customer != null">
+                #{customer.customerId},
+            </if>
+            <if test="order != null">
+                #{order.orderId},
+            </if>
+
+        </trim>
+    </insert>
+
+    <select id="getReviewByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from review where 1=1
+        <if test="customerId!=null">
+            and customerId=#{customerId}
+        </if>
+        <if test="storeId!=null">
+            and storeId=#{storeId}
+        </if>
+        <if test="orderId!=null">
+            and orderId=#{orderId}
+        </if>
+        <if test="aReviewScore !=null">
+            and #{aReviewScore} >= avgScore
+        </if>
+        <if test="fReviewScore !=null">
+            and avgScore >= #{fReviewScore}
+        </if>
+        <if test="reviewTime!=null">
+            and reviewTime=#{reviewTime}
+        </if>
+    </select>
+
+    <update id="updateReview" parameterType="com.xiaoshi.order.pojo.entity.Review">
+         update review
+        <set>
+            <if test="serviceScore != null">
+                serviceScore= #{serviceScore},
+            </if>
+            <if test="weightScore != null">
+                weightScore=#{weightScore},
+            </if>
+            <if test="avgScore != null">
+                avgScore= #{avgScore},
+            </if>
+            <if test="tasteScore != null">
+                tasteScore= #{tasteScore},
+            </if>
+            <if test="scoreContent != null">
+                scoreContent= #{scoreContent},
+            </if>
+            <if test="reviewTime != null">
+                reviewTime=#{reviewTime},
+            </if>
+            <if test="isAutoReview != null">
+                isAutoReview= #{isAutoReview},
+            </if>
+            <if test="isDeleted != null">
+                isDeleted= #{isDeleted},
+            </if>
+            <if test="store != null">
+                storeId=#{store.storeId},
+            </if>
+            <if test="customer != null">
+                customerId=#{customer.customerId},
+            </if>
+            <if test="order != null">
+                orderId= #{order.orderId},
+            </if>
+
+        </set>
+        where reviewId = #{reviewId}
+    </update>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.StorePictureAssociationDao">
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.StorePictureAssociation">
+        <result column="isDeleted" property="isDeleted" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <association property="picture" column="pictureId"
+                     select="com.xiaoshi.order.dao.PictureDao.select">
+        </association>
+        <association property="store" column="storeId"
+                     select="com.xiaoshi.order.dao.StoreDao.select">
+        </association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.util.Map">
+      select * from storepictureassociation where 1=1
+        <if test="storeId!=null">
+            and storeId=#{storeId}
+        </if>
+        <if test="pictureId!=null">
+            and pictureId=#{pictureId}
+        </if>
+    </select>
+
+
+</mapper>

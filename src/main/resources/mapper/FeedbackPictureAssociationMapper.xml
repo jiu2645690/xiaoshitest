@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.FeedbackPictureAssociationDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.FeedbackPictureAssociation">
+       <association column="pictureId" property="picture"
+                     select="com.xiaoshi.order.dao.PictureDao.select">
+        </association>
+        <association column="feedbackId" property="feedback"
+                     select="com.xiaoshi.order.dao.FeedbackDao.select">
+        </association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select * from feedbackpictureassociation where feedbackId = #{feedbackId}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select * from feedbackpictureassociation
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.FeedbackPictureAssociation"
+            keyProperty="feedbackId">
+        insert into feedbackpictureassociation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="picture != null">
+                pictureId,
+            </if>
+            <if test="feedback != null">
+                feedbackId,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="picture != null">
+                #{picture.pictureId},
+            </if>
+            <if test="feedback != null">
+                #{feedback.feedbackId},
+            </if>
+
+        </trim>
+    </insert>
+
+    <select id="getFeedbackPictureAssociationByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from feedbackpictureassociation where 1=1
+        <if test="pictureId != null">
+            and pictureId=#{pictureId}
+        </if>
+        <if test="feedbackId != null">
+            and feedbackId=#{feedbackId}
+        </if>
+
+    </select>
+
+    <update id="updateFeedbackPictureAssociation" parameterType="com.xiaoshi.order.pojo.entity.FeedbackPictureAssociation">
+        update feedbackpictureassociation
+        <set>
+            <if test="picture != null">
+                and pictureId=#{picture.pictureId},
+            </if>
+
+        </set>
+        where feedbackId = #{feedback.feedbackId}
+    </update>
+
+</mapper>

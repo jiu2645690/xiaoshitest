@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.StoreAuthDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.StoreAuth">
+
+        <id column="storeAuthId" property="storeAuthId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="storeSecretkey" property="storeSecretkey" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="password" property="password" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="allowLogin" property="allowLogin" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="allowBackgroundLogin" property="allowBackgroundLogin" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="createdAt" property="createdAt" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <association column="storeId" property="store"
+                     select="com.xiaoshi.order.dao.StoreDao.select">
+        </association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select storeAuthId, storeId, storeSecretkey, password, createdAt, allowLogin ,allowBackgroundLogin
+      from storeauth where storeAuthId = #{storeAuthId}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select * from storeauth
+    </select>
+
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.StoreAuth"
+            keyProperty="storeAuthId">
+        insert into storeauth
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="storeSecretkey != null">
+                storeSecretkey,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="allowLogin != null">
+                allowLogin,
+            </if>
+            <if test="createdAt != null">
+                createdAt,
+            </if>
+            <if test="store != null">
+                storeId,
+            </if>
+            <if test="allowBackgroundLogin != null">
+                allowBackgroundLogin,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="storeSecretkey != null">
+                #{storeSecretkey},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="allowLogin != null">
+                #{allowLogin},
+            </if>
+            <if test="createdAt != null">
+                #{createdAt},
+            </if>
+            <if test="store != null">
+                #{store.storeId},
+            </if>
+            <if test="allowBackgroundLogin != null">
+                #{allowBackgroundLogin},
+            </if>
+
+        </trim>
+    </insert>
+    <select id="getStoreByParameter" parameterType="java.lang.Long" resultMap="baseResultMap">
+        select a.* from storeauth a,store b where b.storeId = a.storeId
+            and b.storeId=#{id}
+    </select>
+    <select id="getStoreAuthByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from storeauth where 1=1
+    </select>
+
+    <update id="updateStoreAuth" parameterType="com.xiaoshi.order.pojo.entity.StoreAuth">
+        update storeauth
+        <set>
+            <if test="store!=null">
+                storeId=#{store.storeId},
+            </if>
+            <if test="storeSecretkey!=null">
+                storeSecretkey=#{storeSecretkey},
+            </if>
+            <if test="password!=null">
+                password=#{password},
+            </if>
+            <if test="createdAt!=null">
+                createdAt=#{createdAt},
+            </if>
+            <if test="allowLogin!=null">
+                allowLogin=#{allowLogin},
+            </if>
+            <if test="allowBackgroundLogin!=null">
+                allowBackgroundLogin=#{allowBackgroundLogin},
+            </if>
+        </set>
+        where storeAuthId = #{storeAuthId}
+    </update>
+
+</mapper>

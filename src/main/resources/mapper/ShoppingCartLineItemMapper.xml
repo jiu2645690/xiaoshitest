@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.ShoppingCartLineItemDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.ShoppingCartLineItem">
+        <id column="shoppingCartLineItemId" property="shoppingCartLineItemId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="comboCount" property="comboCount" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="deliveryTime" property="deliveryTime" jdbcType="BIGINT" javaType="java.lang.Integer"/>
+        <result column="state" property="state" jdbcType="BIGINT" javaType="java.lang.Integer"/>
+        <result column="foodItemCount" property="foodItemCount" jdbcType="BIGINT" javaType="java.lang.Integer"/>
+        <result column="deliveryDate" property="deliveryDate" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <result column="createdAt" property="createdAt" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <result column="updatedAt" property="updatedAt" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <association column="shoppingCartId" property="shoppingCart"
+                     select="com.xiaoshi.order.dao.ShoppingCartDao.select">
+        </association>
+        <association column="comboId" property="combo"
+                     select="com.xiaoshi.order.dao.ComboDao.select">
+        </association>
+        <association column="foodItemId" property="foodItem"
+                     select="com.xiaoshi.order.dao.FoodItemDao.select">
+        </association>
+        <association column="storeId" property="store"
+                     select="com.xiaoshi.order.dao.StoreDao.select">
+        </association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select *  from shoppingcartlineitem where shoppingCartLineItemId = #{shoppingCartLineItemId}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select * from shoppingcartlineitem
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.ShoppingCartLineItem"
+            keyProperty="shoppingCartLineItemId">
+        insert into shoppingcartlineitem
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="comboCount != null">
+                comboCount,
+            </if>
+            <if test="deliveryTime != null">
+                deliveryTime,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="foodItemCount != null">
+                foodItemCount,
+            </if>
+            <if test="deliveryDate != null">
+                deliveryDate,
+            </if>
+            <if test="createdAt != null">
+                createdAt,
+            </if>
+            <if test="updatedAt != null">
+                updatedAt,
+            </if>
+            <if test="shoppingCart != null">
+                shoppingCartId,
+            </if>
+            <if test="combo != null">
+                comboId,
+            </if>
+            <if test="foodItem != null">
+                foodItemId,
+            </if>
+            <if test="store != null">
+                storeId,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="comboCount != null">
+                #{comboCount},
+            </if>
+            <if test="deliveryTime != null">
+                #{deliveryTime},
+            </if>
+            <if test="state != null">
+                #{state},
+            </if>
+            <if test="foodItemCount != null">
+                #{foodItemCount},
+            </if>
+            <if test="deliveryDate != null">
+                #{deliveryDate},
+            </if>
+            <if test="createdAt != null">
+                #{createdAt},
+            </if>
+            <if test="updatedAt != null">
+                #{updatedAt},
+            </if>
+            <if test="shoppingCart != null">
+                #{shoppingCart.shoppingCartId},
+            </if>
+            <if test="combo != null">
+                #{combo.comboId},
+            </if>
+            <if test="foodItem != null">
+                #{foodItem.foodItemId},
+            </if>
+            <if test="store != null">
+                #{store.storeId},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getShoppingCartLineItemByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from shoppingcartlineitem where 1=1
+        <if test="comboCount != null">
+            and comboCount= #{comboCount}
+        </if>
+        <if test="deliveryTime != null">
+            and  deliveryTime=#{deliveryTime}
+        </if>
+        <if test="state != null">
+            and  state=#{state}
+        </if>
+        <if test="foodItemCount != null">
+            and  foodItemCount=#{foodItemCount}
+        </if>
+        <if test="deliveryDate != null">
+            and  deliveryDate= #{deliveryDate}
+        </if>
+        <if test="createdAt != null">
+            and  createdAt=#{createdAt}
+        </if>
+        <if test="updatedAt != null">
+            and  updatedAt=#{updatedAt}
+        </if>
+        <if test="shoppingCartId != null">
+            and  shoppingCartId=#{shoppingCartId}
+        </if>
+        <if test="comboId != null">
+            and  comboId= #{comboId}
+        </if>
+        <if test="foodItemId != null">
+            and foodItemId=#{foodItemId}
+        </if>
+        <if test="storeId != null">
+            and storeId=#{storeId}
+        </if>
+    </select>
+
+    <select id="deleteShoppingCartLineItemByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        delete from shoppingcartlineitem where 1=1
+        <if test="shoppingCartLineItemId != null">
+            and shoppingCartLineItemId= #{shoppingCartLineItemId}
+        </if>
+        <if test="comboCount != null">
+            and comboCount= #{comboCount}
+        </if>
+        <if test="deliveryTime != null">
+            and  deliveryTime=#{deliveryTime}
+        </if>
+        <if test="state != null">
+            and  state=#{state}
+        </if>
+        <if test="foodItemCount != null">
+            and  foodItemCount=#{foodItemCount}
+        </if>
+        <if test="deliveryDate != null">
+            and  deliveryDate= #{deliveryDate}
+        </if>
+        <if test="createdAt != null">
+            and  createdAt=#{createdAt}
+        </if>
+        <if test="updatedAt != null">
+            and  updatedAt=#{updatedAt}
+        </if>
+        <if test="shoppingCartId != null">
+            and  shoppingCartId=#{shoppingCartId}
+        </if>
+        <if test="comboId != null">
+            and  comboId= #{comboId}
+        </if>
+        <if test="foodItemId != null">
+            and foodItemId=#{foodItemId}
+        </if>
+        <if test="storeId != null">
+            and storeId=#{storeId}
+        </if>
+    </select>
+
+    <select id="selectShoppingCartLineItemGroup" resultMap="baseResultMap" parameterType="java.lang.Long">
+		select * from shoppingcartlineitem where  shoppingCartId= #{shoppingCartId}
+        group by storeId,deliveryDate,deliveryTime
+    </select>
+
+
+    <update id="updateShoppingCartLineItem" parameterType="com.xiaoshi.order.pojo.entity.ShoppingCartLineItem">
+        update shoppingcartlineitem
+        <set>
+            <if test="comboCount != null">
+                comboCount= #{comboCount},
+            </if>
+            <if test="deliveryTime != null">
+                deliveryTime=#{deliveryTime},
+            </if>
+            <if test="state != null">
+                state=#{state},
+            </if>
+            <if test="foodItemCount != null">
+                foodItemCount=#{foodItemCount},
+            </if>
+            <if test="deliveryDate != null">
+                deliveryDate= #{deliveryDate},
+            </if>
+            <if test="createdAt != null">
+                createdAt=#{createdAt},
+            </if>
+            <if test="updatedAt != null">
+                updatedAt=#{updatedAt},
+            </if>
+            <if test="shoppingCart != null">
+                shoppingCartId=#{shoppingCart.shoppingCartId},
+            </if>
+            <if test="combo != null">
+                comboId= #{combo.comboId},
+            </if>
+            <if test="foodItem != null">
+                foodItemId=#{foodItem.foodItemId},
+            </if>
+            <if test="store != null">
+                storeId=#{store.storeId},
+            </if>
+        </set>
+        where shoppingCartLineItemId = #{shoppingCartLineItemId}
+    </update>
+    <select id="getShoppingCartLineItemCountByCustomerId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        select count(shoppingCartLineItemId) from
+            ShoppingCartLineItem scl
+         left join  ShoppingCart sc
+         on scl.shoppingCartId=sc.shoppingCartId
+         left join Customer c
+         on   sc.customerId=c.customerId
+         where  c.customerId=#{customerId} and state=1
+    </select>
+</mapper>

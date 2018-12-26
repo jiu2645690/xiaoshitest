@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.OrderDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.Order">
+
+        <id column="orderId" property="orderId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="uuId" property="uuId" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="deliveryTime" property="deliveryTime" jdbcType="BIGINT" javaType="java.lang.Integer"/>
+        <result column="state" property="state" jdbcType="BIGINT" javaType="java.lang.Integer"/>
+        <result column="zhangPeriod" property="zhangPeriod" jdbcType="BIGINT" javaType="java.lang.Integer"/>
+        <result column="deliveryDate" property="deliveryDate" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <result column="createdAt" property="createdAt" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <result column="lastUpdatedAt" property="lastUpdatedAt" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <result column="deliveredTime" property="deliveredTime" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <result column="refundTime" property="refundTime" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <result column="totalAmount" property="totalAmount" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+        <result column="storeEarnings" property="storeEarnings" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+        <result column="platformEarnings" property="platformEarnings" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+        <result column="proportional" property="proportional" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+        <result column="subTotal" property="subTotal" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+        <result column="taxes" property="taxes" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+        <result column="tip" property="tip" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="refundReason" property="refundReason" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="storeIsDeleted" property="storeIsDeleted" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <result column="customerIsDeleted" property="customerIsDeleted" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <result column="customerIsRead" property="customerIsRead" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <result column="storeIsRead" property="storeIsRead" jdbcType="BIT" javaType="java.lang.Boolean"/>
+
+        <association column="addressId" property="address"
+                     select="com.xiaoshi.order.dao.AddressDao.select">
+        </association>
+        <association column="customerId" property="customer"
+                     select="com.xiaoshi.order.dao.CustomerDao.select">
+        </association>
+        <association column="storeId" property="store"
+                     select="com.xiaoshi.order.dao.StoreDao.select">
+        </association>
+    </resultMap>
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select * from orderform where orderId = #{id}
+    </select>
+    <select id="deleteOrderById" resultMap="baseResultMap" parameterType="java.lang.Long">
+      delete from orderform where orderId = #{id}
+    </select>
+    <select id="selectList" resultMap="baseResultMap">
+      select *
+      from orderform
+    </select>
+
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.Order"
+            keyProperty="orderId">
+        insert into orderform
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuId != null">
+                uuId,
+            </if>
+            <if test="deliveryTime != null">
+                deliveryTime,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="zhangPeriod != null">
+                zhangPeriod,
+            </if>
+            <if test="deliveryDate != null">
+                deliveryDate,
+            </if>
+            <if test="createdAt != null">
+                createdAt,
+            </if>
+            <if test="lastUpdatedAt != null">
+                lastUpdatedAt,
+            </if>
+            <if test="deliveredTime != null">
+                deliveredTime,
+            </if>
+            <if test="refundTime != null">
+                refundTime,
+            </if>
+            <if test="totalAmount != null">
+                totalAmount,
+            </if>
+            <if test="storeEarnings != null">
+                storeEarnings,
+            </if>
+            <if test="platformEarnings != null">
+                platformEarnings,
+            </if>
+            <if test="proportional != null">
+                proportional,
+            </if>
+            <if test="subTotal != null">
+                subTotal,
+            </if>
+            <if test="taxes != null">
+                taxes,
+            </if>
+            <if test="tip != null">
+                tip,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="refundReason != null">
+                refundReason,
+            </if>
+            <if test="storeIsDeleted != null">
+                storeIsDeleted,
+            </if>
+            <if test="customerIsDeleted != null">
+                customerIsDeleted,
+            </if>
+            <if test="customerIsRead != null">
+                customerIsRead,
+            </if>
+            <if test="storeIsRead != null">
+                storeIsRead,
+            </if>
+            <if test="address != null">
+                addressId,
+            </if>
+            <if test="customer != null">
+                customerId,
+            </if>
+            <if test="store != null">
+                storeId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuId != null">
+                #{uuId},
+            </if>
+            <if test="deliveryTime != null">
+                #{deliveryTime},
+            </if>
+            <if test="state != null">
+                #{state},
+            </if>
+            <if test="zhangPeriod != null">
+                #{zhangPeriod},
+            </if>
+            <if test="deliveryDate != null">
+                #{deliveryDate},
+            </if>
+            <if test="createdAt != null">
+                #{createdAt},
+            </if>
+            <if test="lastUpdatedAt != null">
+                #{lastUpdatedAt},
+            </if>
+            <if test="deliveredTime != null">
+                #{deliveredTime},
+            </if>
+            <if test="refundTime != null">
+                #{refundTime},
+            </if>
+            <if test="totalAmount != null">
+                #{totalAmount},
+            </if>
+            <if test="storeEarnings != null">
+                #{storeEarnings},
+            </if>
+            <if test="platformEarnings != null">
+                #{platformEarnings},
+            </if>
+            <if test="proportional != null">
+                #{proportional},
+            </if>
+            <if test="subTotal != null">
+                #{subTotal},
+            </if>
+            <if test="taxes != null">
+                #{taxes},
+            </if>
+            <if test="tip != null">
+                #{tip},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="refundReason != null">
+                #{refundReason},
+            </if>
+            <if test="storeIsDeleted != null">
+                #{storeIsDeleted},
+            </if>
+            <if test="customerIsDeleted != null">
+                #{customerIsDeleted},
+            </if>
+            <if test="customerIsRead != null">
+                #{customerIsRead},
+            </if>
+            <if test="storeIsRead != null">
+                #{storeIsRead},
+            </if>
+            <if test="address != null">
+                #{address.addressId},
+            </if>
+            <if test="customer != null">
+                #{customer.customerId},
+            </if>
+            <if test="store != null">
+                #{store.storeId},
+            </if>
+
+        </trim>
+    </insert>
+    <select id="getOrderByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from orderform where 1=1
+        <if test="uuId != null">
+           and  uuId=#{uuId}
+        </if>
+        <if test="deliveryTime != null">
+            and deliveryTime= #{deliveryTime}
+        </if>
+        <if test="state != null">
+            <choose>
+                <when test="state == 5">
+                    and (state= #{state} or state= 6)
+                </when>
+                <otherwise>
+                    and state= #{state}
+                </otherwise>
+            </choose>
+        </if>
+        <if test="zhangPeriod != null">
+            and zhangPeriod=#{zhangPeriod}
+        </if>
+        <if test="deliveryDate != null">
+            and deliveryDate= #{deliveryDate}
+        </if>
+        <if test="createdAt != null">
+            and createdAt=#{createdAt}
+        </if>
+        <if test="lastUpdatedAt != null">
+            and lastUpdatedAt=#{lastUpdatedAt}
+        </if>
+        <if test="deliveredTime != null">
+            and deliveredTime=#{deliveredTime}
+        </if>
+        <if test="refundTime != null">
+            and refundTime= #{refundTime}
+        </if>
+        <if test="totalAmount != null">
+            and totalAmount=#{totalAmount}
+        </if>
+        <if test="storeEarnings != null">
+            and storeEarnings= #{storeEarnings}
+        </if>
+        <if test="platformEarnings != null">
+            and platformEarnings= #{platformEarnings}
+        </if>
+        <if test="proportional != null">
+            and proportional= #{proportional}
+        </if>
+        <if test="subTotal != null">
+            and subTotal= #{subTotal}
+        </if>
+        <if test="taxes != null">
+            and taxes=#{taxes}
+        </if>
+        <if test="tip != null">
+            and tip=#{tip}
+        </if>
+        <if test="remark != null">
+            and remark=#{remark}
+        </if>
+        <if test="refundReason != null">
+            and refundReason= #{refundReason}
+        </if>
+        <if test="storeIsDeleted != null">
+            and storeIsDeleted=#{storeIsDeleted}
+        </if>
+        <if test="customerIsDeleted != null">
+            and customerIsDeleted=#{customerIsDeleted}
+        </if>
+        <if test="customerIsRead != null">
+            and customerIsRead= #{customerIsRead}
+        </if>
+        <if test="storeIsRead != null">
+            storeIsRead=#{storeIsRead},
+        </if>
+        <if test="addressId != null">
+            and addressId= #{addressId}
+        </if>
+        <if test="customerId != null">
+           and customerId= #{customerId}
+        </if>
+        <if test="storeId != null">
+           and  storeId=#{storeId}
+        </if>
+    </select>
+    <update id="updateOrder" parameterType="com.xiaoshi.order.pojo.entity.Order">
+         update orderform
+        <set>
+            <if test="uuId != null">
+                uuId=#{uuId},
+            </if>
+            <if test="deliveryTime != null">
+                deliveryTime= #{deliveryTime},
+            </if>
+            <if test="state != null">
+                state= #{state},
+            </if>
+            <if test="zhangPeriod != null">
+                zhangPeriod=#{zhangPeriod},
+            </if>
+            <if test="deliveryDate != null">
+                deliveryDate= #{deliveryDate},
+            </if>
+            <if test="createdAt != null">
+                createdAt=#{createdAt},
+            </if>
+            <if test="lastUpdatedAt != null">
+                lastUpdatedAt=#{lastUpdatedAt},
+            </if>
+            <if test="deliveredTime != null">
+                deliveredTime=#{deliveredTime},
+            </if>
+            <if test="refundTime != null">
+                refundTime= #{refundTime},
+            </if>
+            <if test="totalAmount != null">
+                totalAmount=#{totalAmount},
+            </if>
+            <if test="storeEarnings != null">
+                storeEarnings= #{storeEarnings},
+            </if>
+            <if test="platformEarnings != null">
+                platformEarnings= #{platformEarnings},
+            </if>
+            <if test="proportional != null">
+                proportional= #{proportional},
+            </if>
+            <if test="subTotal != null">
+                subTotal= #{subTotal},
+            </if>
+            <if test="taxes != null">
+                taxes=#{taxes},
+            </if>
+            <if test="tip != null">
+                tip=#{tip},
+            </if>
+            <if test="remark != null">
+                remark=#{remark},
+            </if>
+            <if test="refundReason != null">
+                refundReason= #{refundReason},
+            </if>
+            <if test="storeIsDeleted != null">
+                storeIsDeleted=#{storeIsDeleted},
+            </if>
+            <if test="customerIsDeleted != null">
+                customerIsDeleted=#{customerIsDeleted},
+            </if>
+            <if test="customerIsRead != null">
+                customerIsRead= #{customerIsRead},
+            </if>
+            <if test="storeIsRead != null">
+                storeIsRead=#{storeIsRead},
+            </if>
+            <if test="address != null">
+                addressId= #{address.addressId},
+            </if>
+            <if test="customer != null">
+                customerId= #{customer.customerId},
+            </if>
+            <if test="store != null">
+                storeId=#{store.storeId},
+            </if>
+        </set>
+        where orderId = #{orderId}
+    </update>
+</mapper>

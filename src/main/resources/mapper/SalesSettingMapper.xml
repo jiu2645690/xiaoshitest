@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.SalesSettingDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.SalesSetting">
+
+        <result column="lunchRefundInterval" property="lunchRefundInterval" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <result column="dinnerRefundInterval" property="dinnerRefundInterval" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <result column="lunchOrderendTime" property="lunchOrderendTime" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <result column="dinnerOrderendTime" property="dinnerOrderendTime" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <result column="isHaveLunch" property="isHaveLunch" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <result column="isHaveDinner" property="isHaveDinner" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <association column="pictureId" property="picture"
+                     select="com.xiaoshi.order.dao.PictureDao.select">
+        </association>
+        <association column="storeId" property="store"
+                     select="com.xiaoshi.order.dao.StoreDao.select">
+        </association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select *  from salessetting where storeId = #{storeId}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select *
+      from salessetting
+    </select>
+
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.SalesSetting"
+            keyProperty="storeId">
+        insert into salessetting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="lunchRefundInterval != null">
+                lunchRefundInterval,
+            </if>
+            <if test="dinnerRefundInterval != null">
+                dinnerRefundInterval,
+            </if>
+            <if test="lunchOrderendTime != null">
+                lunchOrderendTime,
+            </if>
+            <if test="dinnerOrderendTime != null">
+                dinnerOrderendTime,
+            </if>
+            <if test="isHaveLunch != null">
+                isHaveLunch,
+            </if>
+            <if test="isHaveDinner != null">
+                isHaveDinner,
+            </if>
+            <if test="picture != null">
+                pictureId,
+            </if>
+            <if test="store != null">
+                storeId,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="lunchRefundInterval != null">
+                #{lunchRefundInterval},
+            </if>
+            <if test="dinnerRefundInterval != null">
+                #{dinnerRefundInterval},
+            </if>
+            <if test="lunchOrderendTime != null">
+                #{lunchOrderendTime},
+            </if>
+            <if test="dinnerOrderendTime != null">
+                #{dinnerOrderendTime},
+            </if>
+            <if test="isHaveLunch != null">
+                #{isHaveLunch},
+            </if>
+            <if test="isHaveDinner != null">
+                #{isHaveDinner},
+            </if>
+            <if test="picture != null">
+                #{picture.pictureId},
+            </if>
+            <if test="store != null">
+                #{store.storeId},
+            </if>
+
+        </trim>
+    </insert>
+
+    <select id="getSalesSettingByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from salessetting where 1=1
+    </select>
+
+    <update id="updateSalesSetting" parameterType="com.xiaoshi.order.pojo.entity.SalesSetting">
+         update salessetting
+        <set>
+            <if test="lunchRefundInterval != null">
+                lunchRefundInterval=#{lunchRefundInterval},
+            </if>
+            <if test="dinnerRefundInterval != null">
+                dinnerRefundInterval= #{dinnerRefundInterval},
+            </if>
+            <if test="lunchOrderendTime != null">
+                lunchOrderendTime=#{lunchOrderendTime},
+            </if>
+            <if test="dinnerOrderendTime != null">
+                dinnerOrderendTime= #{dinnerOrderendTime},
+            </if>
+            <if test="isHaveLunch != null">
+                isHaveLunch=#{isHaveLunch},
+            </if>
+            <if test="isHaveDinner != null">
+                isHaveDinner= #{isHaveDinner},
+            </if>
+            <if test="picture != null">
+                pictureId=#{picture.pictureId},
+            </if>
+
+        </set>
+        where storeId = #{store.storeId}
+    </update>
+</mapper>

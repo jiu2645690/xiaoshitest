@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.ComboTemplateDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.ComboTemplate">
+
+        <id column="comboTemplateId" property="comboTemplateId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="comboTemplateName" property="comboTemplateName" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="comboTemplateDiscount" property="comboTemplateDiscount" jdbcType="DOUBLE" javaType="java.lang.Double"/>
+        <result column="comboTemplateRemainingCount" property="comboTemplateRemainingCount" jdbcType="BIGINT" javaType="java.lang.Integer"/>
+        <result column="comboTemplateNumber" property="comboTemplateNumber" jdbcType="BIGINT" javaType="java.lang.Integer"/>
+        <association column="storeId" property="store"
+                     select="com.xiaoshi.order.dao.StoreDao.select">
+        </association>
+        <association column="pictureId" property="picture"
+                     select="com.xiaoshi.order.dao.PictureDao.select">
+        </association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select *
+      from combotemplate where comboTemplateId = #{id}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select * from combotemplate
+    </select>
+
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.ComboTemplate"
+            keyProperty="comboTemplateId">
+        insert into combotemplate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="comboTemplateName != null">
+                comboTemplateName,
+            </if>
+            <if test="comboTemplateNumber != null">
+                comboTemplateNumber,
+            </if>
+            <if test="comboTemplateDiscount != null">
+                comboTemplateDiscount,
+            </if>
+            <if test="comboTemplateRemainingCount != null">
+                comboTemplateRemainingCount,
+            </if>
+            <if test="store != null">
+                storeId,
+            </if>
+            <if test="picture != null">
+                pictureId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="comboTemplateName != null">
+                #{comboTemplateName},
+            </if>
+            <if test="comboTemplateNumber != null">
+                #{comboTemplateNumber},
+            </if>
+            <if test="comboTemplateDiscount != null">
+                #{comboTemplateDiscount},
+            </if>
+            <if test="comboTemplateRemainingCount != null">
+                #{comboTemplateRemainingCount},
+            </if>
+            <if test="store != null">
+                #{store.storeId},
+            </if>
+            <if test="picture != null">
+                #{picture.pictureId},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getComboTemplateByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from combotemplate where 1=1
+        <if test="comboTemplateName != null">
+           and comboTemplateName= #{comboTemplateName},
+        </if>
+        <if test="comboTemplateNumber != null">
+            and comboTemplateNumber=#{comboTemplateNumber},
+        </if>
+        <if test="comboTemplateDiscount != null">
+            and comboTemplateDiscount= #{comboTemplateDiscount},
+        </if>
+        <if test="comboTemplateRemainingCount != null">
+            and comboTemplateRemainingCount=#{comboTemplateRemainingCount},
+        </if>
+        <if test="store != null">
+            and storeId= #{storeId},
+        </if>
+
+    </select>
+
+    <update id="updateComboTemplate" parameterType="com.xiaoshi.order.pojo.entity.ComboTemplate">
+         update combotemplate
+        <set>
+            <if test="comboTemplateName != null">
+                comboTemplateName= #{comboTemplateName},
+            </if>
+            <if test="comboTemplateNumber != null">
+                comboTemplateNumber=#{comboTemplateNumber},
+            </if>
+            <if test="comboTemplateDiscount != null">
+                comboTemplateDiscount= #{comboTemplateDiscount},
+            </if>
+            <if test="comboTemplateRemainingCount != null">
+                comboTemplateRemainingCount=#{comboTemplateRemainingCount},
+            </if>
+            <if test="store != null">
+                storeId= #{store.storeId},
+            </if>
+            <if test="picture != null">
+                pictureId= #{picture.pictureId},
+            </if>
+        </set>
+        where comboTemplateId = #{comboTemplateId}
+    </update>
+</mapper>

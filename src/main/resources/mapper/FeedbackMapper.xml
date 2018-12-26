@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.FeedbackDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.Feedback">
+        <id column="feedbackId" property="feedbackId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="sendPeopleType" property="sendPeopleType" jdbcType="BIGINT" javaType="java.lang.Integer"/>
+        <result column="sendPeopleId" property="sendPeopleId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="receivePeopleType" property="receivePeopleType" jdbcType="BIGINT" javaType="java.lang.Integer"/>
+        <result column="receivePeopleId" property="receivePeopleId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="feedbackContent" property="feedbackContent" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="beReportedStoreId" property="beReportedStoreId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="sendIsRead" property="sendIsRead" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <result column="receiveIsRead" property="receiveIsRead" jdbcType="BIT" javaType="java.lang.Boolean"/>
+
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select * from feedback where feedbackId = #{feedbackId}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select * from feedback
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.Feedback"
+            keyProperty="feedbackId">
+        insert into feedback
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sendPeopleType != null">
+                sendPeopleType,
+            </if>
+            <if test="sendPeopleId != null">
+                sendPeopleId,
+            </if>
+            <if test="receivePeopleType != null">
+                receivePeopleType,
+            </if>
+            <if test="receivePeopleId != null">
+                receivePeopleId,
+            </if>
+            <if test="feedbackContent != null">
+                feedbackContent,
+            </if>
+            <if test="beReportedStoreId != null">
+                beReportedStoreId,
+            </if>
+            <if test="sendIsRead != null">
+                sendIsRead,
+            </if>
+            <if test="receiveIsRead != null">
+                receiveIsRead,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sendPeopleType != null">
+                #{sendPeopleType},
+            </if>
+            <if test="sendPeopleId != null">
+                #{sendPeopleId},
+            </if>
+            <if test="receivePeopleType != null">
+                #{receivePeopleType},
+            </if>
+            <if test="receivePeopleId != null">
+                #{receivePeopleId},
+            </if>
+            <if test="feedbackContent != null">
+                #{feedbackContent},
+            </if>
+            <if test="beReportedStoreId != null">
+                #{beReportedStoreId},
+            </if>
+            <if test="sendIsRead != null">
+                #{sendIsRead},
+            </if>
+            <if test="receiveIsRead != null">
+                #{receiveIsRead},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getFeedbackByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from feedback where 1=1
+        <if test="sendPeopleType != null">
+            and sendPeopleType= #{sendPeopleType}
+        </if>
+        <if test="sendPeopleId != null">
+            and sendPeopleId= #{sendPeopleId}
+        </if>
+        <if test="receivePeopleType != null">
+            and receivePeopleType= #{receivePeopleType}
+        </if>
+        <if test="receivePeopleId != null">
+            and receivePeopleId= #{receivePeopleId}
+        </if>
+        <if test="feedbackContent != null">
+            and feedbackContent= #{feedbackContent}
+        </if>
+        <if test="beReportedStoreId != null">
+            and beReportedStoreId= #{beReportedStoreId}
+        </if>
+        <if test="sendIsRead != null">
+            and sendIsRead= #{sendIsRead}
+        </if>
+        <if test="receiveIsRead != null">
+            and receiveIsRead= #{receiveIsRead}
+        </if>
+        <if test="feedbackId != null">
+            and feedbackId= #{feedbackId}
+        </if>
+    </select>
+
+    <update id="updateFeedback" parameterType="com.xiaoshi.order.pojo.entity.Feedback">
+        update feedback
+        <set>
+            <if test="sendPeopleType != null">
+                 sendPeopleType= #{sendPeopleType},
+            </if>
+            <if test="sendPeopleId != null">
+                 sendPeopleId= #{sendPeopleId},
+            </if>
+            <if test="receivePeopleType != null">
+                 receivePeopleType= #{receivePeopleType},
+            </if>
+            <if test="receivePeopleId != null">
+                 receivePeopleId= #{receivePeopleId},
+            </if>
+            <if test="feedbackContent != null">
+                 feedbackContent= #{feedbackContent},
+            </if>
+            <if test="beReportedStoreId != null">
+                 beReportedStoreId= #{beReportedStoreId},
+            </if>
+            <if test="sendIsRead != null">
+                 sendIsRead= #{sendIsRead},
+            </if>
+            <if test="receiveIsRead != null">
+                 receiveIsRead= #{receiveIsRead},
+            </if>
+        </set>
+        where feedbackId = #{feedbackId}
+    </update>
+
+</mapper>

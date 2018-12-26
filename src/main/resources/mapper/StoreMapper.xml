@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.StoreDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.Store">
+
+        <id column="storeId" property="storeId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="phoneNumber" property="phoneNumber" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="email" property="email" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="wechatOpenid" property="wechatOpenid" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="phoneNumberIsValidated" property="phoneNumberIsValidated" jdbcType="VARCHAR"
+                javaType="java.lang.String"/>
+        <result column="emailIsValidated" property="emailIsValidated" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="wechatOpenidIsValidated" property="wechatOpenidIsValidated" jdbcType="VARCHAR"
+                javaType="java.lang.String"/>
+
+        <result column="nickName" property="nickName" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="firstName" property="firstName" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="lastName" property="lastName" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="sex" property="sex" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <result column="balance" property="balance" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+        <result column="storeName" property="storeName" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="averageScore" property="averageScore" jdbcType="DOUBLE" javaType="java.lang.Double"/>
+        <result column="star" property="star" jdbcType="BIGINT" javaType="java.lang.Integer"/>
+        <result column="introduction" property="introduction" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="businessAddress" property="businessAddress" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="isDeleted" property="isDeleted" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <association property="picture" column="avatarPictureId"
+                     select="com.xiaoshi.order.dao.PictureDao.select">
+        </association>
+
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select * from store where storeId = #{id}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select * from store
+    </select>
+
+    <select id="selectStoreList" resultMap="baseResultMap" parameterType="com.xiaoshi.order.pojo.form.StoreForm">
+        select a.* from store a, salessetting c where 1=1
+        <if test="star !=null">
+            and a.star=#{star}
+        </if>
+        <if test="averageScore!=null">
+            and a.averageScore=#{averageScore}
+        </if>
+        <if test="deliveryTime!=null">
+            <if test="deliveryTime==0">
+                and c.storeId=a.storeId and c.isHaveLunch=1
+            </if>
+            <if test="deliveryTime==1">
+                and c.storeId=a.storeId  and c.isHaveDinner=1
+            </if>
+            <if test="deliveryTime==2">
+                and c.storeId=a.storeId   and c.isHaveDinner=1 and c.isHaveLunch=1
+            </if>
+        </if>
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.Store"
+            keyProperty="storeId">
+        insert into store
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="phoneNumber != null">
+                phoneNumber,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="wechatOpenid != null">
+                wechatOpenid,
+            </if>
+            <if test="phoneNumberIsValidated != null">
+                phoneNumberIsValidated,
+            </if>
+            <if test="emailIsValidated != null">
+                emailIsValidated,
+            </if>
+            <if test="wechatOpenidIsValidated != null">
+                wechatOpenidIsValidated,
+            </if>
+
+            <if test="nickName != null">
+                nickName,
+            </if>
+            <if test="firstName != null">
+                firstName,
+            </if>
+            <if test="lastName != null">
+                lastName,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="balance != null">
+                balance,
+            </if>
+            <if test="storeName != null">
+                storeName,
+            </if>
+            <if test="averageScore != null">
+                averageScore,
+            </if>
+            <if test="star != null">
+                star,
+            </if>
+            <if test="introduction != null">
+                introduction,
+            </if>
+            <if test="businessAddress != null">
+                businessAddress,
+            </if>
+            <if test="isDeleted != null">
+                isDeleted,
+            </if>
+            <if test="picture != null">
+                avatarPictureId,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="phoneNumber != null">
+                #{phoneNumber},
+            </if>
+            <if test="email != null">
+                #{email},
+            </if>
+            <if test="wechatOpenid != null">
+                #{wechatOpenid},
+            </if>
+            <if test="phoneNumberIsValidated != null">
+                #{phoneNumberIsValidated},
+            </if>
+            <if test="emailIsValidated != null">
+                #{emailIsValidated},
+            </if>
+            <if test="wechatOpenidIsValidated != null">
+                #{wechatOpenidIsValidated},
+            </if>
+
+            <if test="nickName != null">
+                #{nickName},
+            </if>
+            <if test="firstName != null">
+                #{firstName},
+            </if>
+            <if test="lastName != null">
+                #{lastName},
+            </if>
+            <if test="sex != null">
+                #{sex},
+            </if>
+            <if test="balance != null">
+                #{balance},
+            </if>
+            <if test="storeName != null">
+                #{storeName},
+            </if>
+            <if test="averageScore != null">
+                #{averageScore},
+            </if>
+            <if test="star != null">
+                #{star},
+            </if>
+            <if test="introduction != null">
+                #{introduction},
+            </if>
+            <if test="businessAddress != null">
+                #{businessAddress},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted},
+            </if>
+            <if test="picture != null">
+                #{picture.pictureId},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateStore" parameterType="com.xiaoshi.order.pojo.entity.Store">
+        update store
+        <set>
+            <if test="phoneNumber != null">
+                phoneNumber=#{phoneNumber},
+            </if>
+            <if test="introduction != null">
+                introduction=#{introduction},
+            </if>
+            <if test="email != null">
+                email=#{email},
+            </if>
+            <if test="wechatOpenid != null">
+                wechatOpenid= #{wechatOpenid},
+            </if>
+            <if test="phoneNumberIsValidated != null">
+                phoneNumberIsValidated=#{phoneNumberIsValidated},
+            </if>
+            <if test="emailIsValidated != null">
+                emailIsValidated= #{emailIsValidated},
+            </if>
+            <if test="wechatOpenidIsValidated != null">
+                wechatOpenidIsValidated= #{wechatOpenidIsValidated},
+            </if>
+            <if test="nickName != null">
+                nickName= #{nickName},
+            </if>
+            <if test="firstName != null">
+                firstName= #{firstName},
+            </if>
+            <if test="lastName != null">
+                lastName= #{lastName},
+            </if>
+            <if test="sex != null">
+                sex= #{sex},
+            </if>
+            <if test="balance != null">
+                balance= #{balance},
+            </if>
+            <if test="averageScore != null">
+                averageScore= #{averageScore},
+            </if>
+            <if test="storeName != null">
+                storeName= #{storeName},
+            </if>
+        </set>
+        where storeId = #{storeId}
+    </update>
+    <select id="getStoreCount" parameterType="java.util.Map" resultType="Integer">
+        select COUNT(*) from store where 1=1
+        <if test="phoneNumber!=null">
+            and phoneNumber=#{phoneNumber}
+        </if>
+        <if test="email!=null">
+            and email=#{email}
+        </if>
+        <if test="wechatOpenid!=null">
+            and wechatOpenid=#{wechatOpenid}
+        </if>
+        <if test="nickName!=null">
+            and nickName=#{nickName}
+        </if>
+
+    </select>
+
+    <select id="getStoreByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from store where 1=1
+        <if test="phoneNumber!=null">
+            and phoneNumber=#{phoneNumber}
+        </if>
+        <if test="email!=null">
+            and email=#{email}
+        </if>
+        <if test="wechatOpenid!=null">
+            and wechatOpenid=#{wechatOpenid}
+        </if>
+        <if test="nickName!=null">
+            and nickName=#{nickName}
+        </if>
+
+    </select>
+
+</mapper>

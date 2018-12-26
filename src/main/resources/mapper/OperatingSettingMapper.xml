@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.OperatingSettingDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.OperatingSetting">
+
+        <result column="date" property="date" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <association column="currentFoodItemTemplateId" property="currentFoodItemTemplateId"
+                     select="com.xiaoshi.order.dao.FoodItemTemplateDao.select">
+        </association>
+        <association column="storeId" property="store"
+                     select="com.xiaoshi.order.dao.StoreDao.select">
+        </association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select *  from operatingsetting where storeId = #{storeId}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select *
+      from operatingsetting
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.OperatingSetting"
+            keyProperty="currentFoodItemTemplateId">
+        insert into operatingsetting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="date != null">
+                date,
+            </if>
+            <if test="currentFoodItemTemplateId != null">
+                currentFoodItemTemplateId,
+            </if>
+            <if test="store != null">
+                storeId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="date != null">
+                #{date},
+            </if>
+            <if test="currentFoodItemTemplateId != null">
+                #{currentFoodItemTemplateId.foodItemTemplateId},
+            </if>
+            <if test="store != null">
+                #{store.storeId},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getOperatingSettingByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from operatingsetting where 1=1
+        <if test="afterDate != null">
+            and  #{afterDate} > date
+        </if>
+        <if test="frontDate != null">
+            and  date >= #{frontDate}
+        </if>
+        <if test="currentFoodItemTemplateId != null">
+            and currentFoodItemTemplateId= #{currentFoodItemTemplateId}
+        </if>
+        <if test="storeId != null">
+            and storeId = #{storeId}
+        </if>
+    </select>
+
+    <update id="updateOperatingSetting" parameterType="com.xiaoshi.order.pojo.entity.OperatingSetting">
+        update operatingsetting
+        <set>
+
+            <if test="currentFoodItemTemplateId != null">
+                currentFoodItemTemplateId= #{currentFoodItemTemplateId.foodItemTemplateId},
+            </if>
+        </set>
+        where storeId = #{store.storeId} and date=#{date}
+    </update>
+</mapper>

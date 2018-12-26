@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.PictureDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.Picture">
+
+        <id column="pictureId" property="pictureId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="pictureUrl" property="pictureUrl" jdbcType="VARCHAR" javaType="java.lang.String"/>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select pictureId, pictureUrl
+      from picture where pictureId = #{id}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select pictureId, pictureUrl
+      from picture
+    </select>
+
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.Picture"
+            keyProperty="pictureId">
+        insert into picture
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pictureUrl != null">
+                pictureUrl,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pictureUrl != null">
+                #{pictureUrl},
+            </if>
+        </trim>
+    </insert>
+
+
+</mapper>

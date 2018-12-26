@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.AddressDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.Address">
+        <id column="addressId" property="addressId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="addressName" property="addressName" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="zipCode" property="zipCode" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="city" property="city" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="state" property="state" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="createdAt" property="createdAt" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <result column="isDeleted" property="isDeleted" jdbcType="BOOLEAN" javaType="java.lang.Boolean"/>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select addressId, addressName, zipCode, city, state, createdAt, isDeleted
+      from address where addressId = #{id}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select addressId, addressName, zipCode, city, state, createdAt, isDeleted
+      from address
+    </select>
+
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.Address"
+            keyProperty="addressId">
+        insert into address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="addressName != null">
+                addressName,
+            </if>
+            <if test="zipCode != null">
+                zipCode,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="createdAt != null">
+                createdAt,
+            </if>
+            <if test="isDeleted != null">
+                isDeleted,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="addressName != null">
+                #{addressName},
+            </if>
+            <if test="zipCode != null">
+                #{zipCode},
+            </if>
+            <if test="city != null">
+                #{city},
+            </if>
+            <if test="state != null">
+                #{state},
+            </if>
+            <if test="createdAt != null">
+                #{createdAt},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into address (addressName, zipCode, city, state,isDeleted) values
+        <foreach item="item" collection="list" separator=",">
+            (#{item.addressName}, #{item.zipCode}, #{item.city}, #{item.state}, #{item.isDeleted})
+        </foreach>
+    </insert>
+</mapper>

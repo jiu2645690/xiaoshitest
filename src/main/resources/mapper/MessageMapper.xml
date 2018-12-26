@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.MessageDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.Message">
+        <id column="messageId" property="messageId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="createdAt" property="createdAt" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <association column="storeId" property="store"
+                     select="com.xiaoshi.order.dao.StoreDao.select">
+        </association>
+        <association column="customerId" property="customer"
+                     select="com.xiaoshi.order.dao.CustomerDao.select">
+        </association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select * from message where messageId = #{messageId}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select * from message
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.Message"
+            keyProperty="messageId">
+        insert into message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createdAt != null">
+                createdAt,
+            </if>
+            <if test="store != null">
+                storeId,
+            </if>
+            <if test="customer != null">
+                customerId,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createdAt != null">
+                #{createdAt},
+            </if>
+            <if test="store != null">
+                #{store.storeId},
+            </if>
+            <if test="customer != null">
+                #{customer.customerId},
+            </if>
+
+        </trim>
+    </insert>
+
+    <select id="getMessageByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from message where 1=1
+        <if test="createdAt != null">
+            and createdAt=#{createdAt}
+        </if>
+        <if test="storeId != null">
+            and storeId=#{storeId}
+        </if>
+        <if test="customerId != null">
+           and customerId=#{customerId}
+        </if>
+        <if test="messageId != null">
+            and messageId=#{messageId}
+        </if>
+    </select>
+
+    <update id="updateMessage" parameterType="com.xiaoshi.order.pojo.entity.Message">
+        update message
+        <set>
+            <if test="createdAt != null">
+                and createdAt=#{createdAt},
+            </if>
+            <if test="store != null">
+                and storeId=#{store.storeId},
+            </if>
+            <if test="customer != null">
+                 customerId=#{customer.customerId},
+            </if>
+        </set>
+        where messageId = #{messageId}
+    </update>
+
+</mapper>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.FoodItemPictureAssociationDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.FoodItemPictureAssociation">
+        <association column="fooditemId" property="foodItem"
+                     select="com.xiaoshi.order.dao.FoodItemDao.select">
+        </association>
+        <association column="pictureId" property="picture"
+                     select="com.xiaoshi.order.dao.PictureDao.select">
+        </association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select *
+      from fooditempictureassociation where fooditemId = #{id}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select * from fooditempictureassociation
+    </select>
+
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.FoodItemPictureAssociation"
+            keyProperty="fooditemId">
+        insert into fooditempictureassociation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="foodItem != null">
+                fooditemId,
+            </if>
+            <if test="picture != null">
+                pictureId,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="foodItem != null">
+                #{foodItem.foodItemId},
+            </if>
+            <if test="picture != null">
+                #{picture.pictureId},
+            </if>
+
+        </trim>
+    </insert>
+
+    <select id="getFoodItemPictureAssociationByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from fooditempictureassociation where 1=1
+        <if test="foodItemTemplateName != null">
+           and fooditemId= #{fooditemId},
+        </if>
+        <if test="store != null">
+            and pictureId= #{pictureId},
+        </if>
+
+    </select>
+
+    <update id="updateFoodItemPictureAssociation" parameterType="com.xiaoshi.order.pojo.entity.FoodItemPictureAssociation">
+         update fooditempictureassociation
+        <set>
+            <if test="foodItem != null">
+                fooditemId= #{foodItem.foodItemId},
+            </if>
+            <if test="picture != null">
+                pictureId= #{picture.pictureId},
+            </if>
+        </set>
+        where foodItemTemplateId = #{foodItemTemplateId}
+    </update>
+</mapper>

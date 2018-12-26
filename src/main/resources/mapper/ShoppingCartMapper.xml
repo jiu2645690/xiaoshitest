@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.ShoppingCartDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.ShoppingCart">
+        <id column="shoppingCartId" property="shoppingCartId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <association property="customer" column="customerId" select="com.xiaoshi.order.dao.CustomerDao.select"></association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select shoppingCartId, customerId
+      from shoppingcart where shoppingCartId = #{id}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select shoppingCartId, customerId
+      from shoppingcart
+    </select>
+
+    <select id="getShoppingCartByCustomerId" parameterType="java.lang.Long" resultMap="baseResultMap">
+        select * from shoppingcart where  customerId=#{customerId}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.ShoppingCart"
+            keyProperty="shoppingCartId">
+        insert into shoppingcart
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="customer != null">
+                customerId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="customer != null">
+                #{customer.customerId},
+            </if>
+        </trim>
+    </insert>
+
+
+</mapper>

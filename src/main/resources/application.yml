@@ -1,0 +1,53 @@
+spring:
+  profiles:
+    active: dev
+  jackson:
+    default-property-inclusion: non_null
+    date-format: yyyy-MM-dd HH:mm:ss
+  redis:
+      host: 127.0.0.1
+      port: 6379
+
+datasource:
+  driverClassName: com.mysql.jdbc.Driver
+  url: jdbc:mysql://101.37.124.77:3306/xiaoshitest?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false
+  username: root
+  password: root
+  initialSize: 10
+  minIdle: 1
+  maxActive: 20
+  maxWait: 60000
+  validationQuery: select 1
+  testOnBorrow: true
+  testOnReturn: true
+  testWhileIdle: true
+  timeBetweenEvictionRunsMillis: 3600000
+  filters: stat
+
+server:
+  port: 8080
+  use-forward-headers: true
+  tomcat:
+    remote-ip-header: x-forwarded-for
+    protocol-header: x-forwarded-proto
+    port-header: X-Forwarded-Port
+logging:
+  level:
+    com.xiaoshi.order.dao: trace
+
+mail:
+  host: smtp.qq.com
+  port: 465
+  mailDebug: true
+  username: 209722371@qq.com
+  password: sbwlmwqxkdqecbbd
+
+  message:
+    awsAccessKeyId: AKIAIG2WMBBHC6VF7AZA
+    awsSecretKey: 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
+    senderID: 1
+    maxPrice: 0.05
+    smsType: Transactional
+    isSend: false
+    messageCodeTemplate: 尊敬的用户您好，本次验证码为：1234，感谢您的使用！
+    replaceCode: 1234

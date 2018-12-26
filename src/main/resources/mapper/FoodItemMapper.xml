@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.FoodItemDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.FoodItem">
+
+        <id column="foodItemId" property="foodItemId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="name" property="name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="description" property="description" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="price" property="price" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+        <result column="dailySpecialPrice" property="dailySpecialPrice" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+        <result column="rank" property="rank" jdbcType="BIGINT" javaType="java.lang.Integer"/>
+        <result column="isAvailable" property="isAvailable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <association column="storeId" property="store"
+                     select="com.xiaoshi.order.dao.StoreDao.select">
+        </association>
+        <association column="pictureId" property="picture"
+                     select="com.xiaoshi.order.dao.PictureDao.select">
+        </association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select *
+      from fooditem where foodItemId = #{id}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select * from fooditem
+    </select>
+
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.FoodItem"
+            keyProperty="foodItemId">
+        insert into fooditem
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                name,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="remainingCount != null">
+                remainingCount,
+            </if>
+            <if test="primaryIngredient != null">
+                primaryIngredient,
+            </if>
+            <if test="complementaryIngredient != null">
+                complementaryIngredient,
+            </if>
+            <if test="rank != null">
+                rank,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="dailySpecialPrice != null">
+                dailySpecialPrice,
+            </if>
+            <if test="isAvailable != null">
+                isAvailable,
+            </if>
+            <if test="store != null">
+                storeId,
+            </if>
+            <if test="picture != null">
+                pictureId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="price != null">
+                #{price},
+            </if>
+            <if test="remainingCount != null">
+                #{remainingCount},
+            </if>
+            <if test="primaryIngredient != null">
+                #{primaryIngredient},
+            </if>
+            <if test="complementaryIngredient != null">
+                #{complementaryIngredient},
+            </if>
+            <if test="rank != null">
+                #{rank},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="dailySpecialPrice != null">
+                #{dailySpecialPrice},
+            </if>
+            <if test="isAvailable != null">
+                #{isAvailable},
+            </if>
+            <if test="store != null">
+                #{store.storeId},
+            </if>
+            <if test="picture != null">
+                #{picture.pictureId},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getFoodItemByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from fooditem where 1=1
+    </select>
+
+    <update id="updateFoodItem" parameterType="com.xiaoshi.order.pojo.entity.Favorite">
+         update fooditem
+        <set>
+            <if test="name != null">
+                name=#{name},
+            </if>
+            <if test="price != null">
+                price=#{price},
+            </if>
+            <if test="remainingCount != null">
+                remainingCount= #{remainingCount},
+            </if>
+            <if test="primaryIngredient != null">
+                primaryIngredient=#{primaryIngredient},
+            </if>
+            <if test="complementaryIngredient != null">
+                complementaryIngredient= #{complementaryIngredient},
+            </if>
+            <if test="rank != null">
+                rank= #{rank},
+            </if>
+            <if test="description != null">
+                description= #{description},
+            </if>
+            <if test="dailySpecialPrice != null">
+                dailySpecialPrice= #{dailySpecialPrice},
+            </if>
+            <if test="isAvailable != null">
+                isAvailable= #{isAvailable},
+            </if>
+            <if test="store != null">
+                storeId= #{store.storeId},
+            </if>
+            <if test="picture != null">
+                pictureId= #{picture.pictureId},
+            </if>
+        </set>
+        where foodItemId = #{foodItemId}
+    </update>
+</mapper>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.ReviewPictureAssociationDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.ReviewPictureAssociation">
+        <result column="isDeleted" property="isDeleted" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <association column="pictureId" property="picture"
+                     select="com.xiaoshi.order.dao.PictureDao.select">
+        </association>
+        <association column="reviewId" property="review"
+                     select="com.xiaoshi.order.dao.ReviewDao.select">
+        </association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select *  from reviewpictureassociation where reviewId = #{storeId}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select *
+      from reviewpictureassociation
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.ReviewPictureAssociation"
+            keyProperty="reviewId">
+        insert into reviewpictureassociation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="isDeleted != null">
+                isDeleted,
+            </if>
+            <if test="picture != null">
+                pictureId,
+            </if>
+            <if test="review != null">
+                reviewId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="isDeleted != null">
+                #{isDeleted},
+            </if>
+            <if test="picture != null">
+                #{picture.pictureId},
+            </if>
+            <if test="review != null">
+                #{review.reviewId},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getReviewPictureAssociationByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from reviewpictureassociation where 1=1
+        <if test="isDeleted != null">
+            and isDeleted = #{isDeleted}
+        </if>
+        <if test="pictureId != null">
+            and pictureId = #{pictureId}
+        </if>
+        <if test="reviewId != null">
+            and reviewId = #{reviewId},
+        </if>
+    </select>
+
+    <update id="updateReviewPictureAssociation" parameterType="com.xiaoshi.order.pojo.entity.ReviewPictureAssociation">
+        update reviewpictureassociation
+        <set>
+            <if test="isDeleted != null">
+                isDeleted= #{isDeleted},
+            </if>
+            <if test="picture != null">
+                pictureId= #{picture.pictureId},
+            </if>
+        </set>
+        where reviewId = #{review.reviewId}
+    </update>
+</mapper>

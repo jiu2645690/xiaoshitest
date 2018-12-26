@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.TranscationDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.Transcation">
+
+        <id column="transcationId" property="transcationId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="transcationNumber" property="transcationNumber" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="amount" property="amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+        <result column="createdAt" property="createdAt" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <result column="paymentMethod" property="paymentMethod" jdbcType="BIGINT" javaType="java.lang.Integer"/>
+        <result column="type" property="type" jdbcType="BIGINT" javaType="java.lang.Integer"/>
+        <result column="isSucess" property="isSucess" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <result column="isDeleted" property="isDeleted" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <result column="failReson" property="failReson" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <association column="storeId" property="store"
+                     select="com.xiaoshi.order.dao.StoreDao.select">
+        </association>
+        <association column="orderId" property="order"
+                     select="com.xiaoshi.order.dao.OrderDao.select">
+        </association>
+        <association column="customerId" property="customer"
+                     select="com.xiaoshi.order.dao.CustomerDao.select">
+        </association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select * from transcation where transcationId = #{transcationId}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select * from transcation
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.Transcation"
+            keyProperty="transcationId">
+        insert into transcation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="transcationNumber != null">
+                transcationNumber,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="createdAt != null">
+                createdAt,
+            </if>
+            <if test="paymentMethod != null">
+                paymentMethod,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="isSucess != null">
+                isSucess,
+            </if>
+            <if test="isDeleted != null">
+                isDeleted,
+            </if>
+            <if test="failReson != null">
+                failReson,
+            </if>
+            <if test="store != null">
+                storeId,
+            </if>
+            <if test="order != null">
+                orderId,
+            </if>
+            <if test="customer != null">
+                customerId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="transcationNumber != null">
+                #{transcationNumber},
+            </if>
+            <if test="amount != null">
+                #{amount},
+            </if>
+            <if test="createdAt != null">
+                #{createdAt},
+            </if>
+            <if test="paymentMethod != null">
+                #{paymentMethod},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="isSucess != null">
+                #{isSucess},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted},
+            </if>
+            <if test="failReson != null">
+                #{failReson},
+            </if>
+            <if test="store != null">
+                #{store.storeId},
+            </if>
+            <if test="order != null">
+                #{order.orderId},
+            </if>
+            <if test="customer != null">
+                #{customer.customerId},
+            </if>
+
+        </trim>
+    </insert>
+
+    <select id="getTranscationByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from transcation where 1=1
+        <if test="transcationNumber != null">
+           and transcationNumber= #{transcationNumber}
+        </if>
+        <if test="amount != null">
+            and amount= #{amount}
+        </if>
+        <if test="createdAt != null">
+            and createdAt= #{createdAt}
+        </if>
+        <if test="paymentMethod != null">
+            and paymentMethod= #{paymentMethod}
+        </if>
+        <if test="type != null">
+            and type= #{type}
+        </if>
+        <if test="isSucess != null">
+            and isSucess= #{isSucess}
+        </if>
+        <if test="isDeleted != null">
+            and isDeleted= #{isDeleted}
+        </if>
+        <if test="failReson != null">
+            and failReson= #{failReson}
+        </if>
+        <if test="storeId != null">
+            and storeId= #{storeId}
+        </if>
+        <if test="orderId != null">
+            and orderId= #{orderId}
+        </if>
+        <if test="customerId != null">
+            and customerId= #{customerId}
+        </if>
+        <if test="afterDate != null">
+            and  #{afterDate} > createdAt
+        </if>
+        <if test="frontDate != null">
+            and  createdAt >= #{frontDate}
+        </if>
+    </select>
+
+    <update id="updateTranscation" parameterType="com.xiaoshi.order.pojo.entity.Transcation">
+        update transcation
+        <set>
+            <if test="transcationNumber != null">
+                transcationNumber=#{transcationNumber},
+            </if>
+            <if test="amount != null">
+                amount=#{amount},
+            </if>
+            <if test="createdAt != null">
+                createdAt=#{createdAt},
+            </if>
+            <if test="paymentMethod != null">
+                paymentMethod=#{paymentMethod},
+            </if>
+            <if test="type != null">
+                type=#{type},
+            </if>
+            <if test="isSucess != null">
+                isSucess=#{isSucess},
+            </if>
+            <if test="isDeleted != null">
+                isDeleted=#{isDeleted},
+            </if>
+            <if test="failReson != null">
+                failReson=#{failReson},
+            </if>
+            <if test="store != null">
+                storeId=#{store.storeId},
+            </if>
+            <if test="order != null">
+                orderId=#{order.orderId},
+            </if>
+            <if test="customer != null">
+                customerId=#{customer.customerId},
+            </if>
+        </set>
+        where transcationId = #{transcationId}
+    </update>
+
+</mapper>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.OrderAndFoodItemComboAssociationDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.OrderAndFoodItemComboAssociation">
+        <result column="foodItemCount" property="foodItemCount" jdbcType="BIGINT" javaType="java.lang.Integer"/>
+        <result column="comboTemplateCount" property="comboTemplateCount" jdbcType="BIGINT" javaType="java.lang.Integer"/>
+        <result column="isDeleted" property="isDeleted" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <association column="orderId" property="order"
+                     select="com.xiaoshi.order.dao.OrderDao.select">
+        </association>
+        <association column="comboId" property="combo"
+                     select="com.xiaoshi.order.dao.ComboDao.select">
+        </association>
+        <association column="foodItemId" property="foodItem"
+                     select="com.xiaoshi.order.dao.FoodItemDao.select">
+        </association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select * from orderandfooditemcomboassociation where orderId = #{orderId}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select *
+      from orderandfooditemcomboassociation
+    </select>
+
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.OrderAndFoodItemComboAssociation"
+            keyProperty="orderId">
+        insert into orderandfooditemcomboassociation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="foodItemCount != null">
+                foodItemCount,
+            </if>
+            <if test="comboTemplateCount != null">
+                comboTemplateCount,
+            </if>
+            <if test="isDeleted != null">
+                isDeleted,
+            </if>
+            <if test="combo != null">
+                comboId,
+            </if>
+            <if test="order != null">
+                orderId,
+            </if>
+            <if test="foodItem != null">
+                foodItemId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="foodItemCount != null">
+                #{foodItemCount},
+            </if>
+            <if test="comboTemplateCount != null">
+                #{comboTemplateCount},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted},
+            </if>
+            <if test="combo != null">
+                #{combo.comboId},
+            </if>
+            <if test="order != null">
+                #{order.orderId},
+            </if>
+            <if test="foodItem != null">
+                #{foodItem.foodItemId},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getOrderAndFoodItemComboAssociationByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from orderandfooditemcomboassociation where 1=1
+        <if test="foodItemCount != null">
+          and   foodItemCount=#{foodItemCount}
+        </if>
+        <if test="comboTemplateCount != null">
+            and   comboTemplateCount=#{comboTemplateCount}
+        </if>
+        <if test="isDeleted != null">
+            and   isDeleted=#{isDeleted}
+        </if>
+        <if test="comboId != null">
+            and   comboId=#{comboId}
+        </if>
+        <if test="orderId != null">
+            and   orderId=#{orderId}
+        </if>
+        <if test="foodItemId != null">
+            and  foodItemId=#{foodItemId}
+        </if>
+    </select>
+
+    <update id="updateOrderAndFoodItemComboAssociation" parameterType="com.xiaoshi.order.pojo.entity.OrderAndFoodItemComboAssociation">
+         update orderandfooditemcomboassociation
+        <set>
+            <if test="foodItemCount!=null">
+                foodItemCount=#{foodItemCount},
+            </if>
+            <if test="comboTemplateCount!=null">
+                comboTemplateCount=#{comboTemplateCount},
+            </if>
+            <if test="isDeleted!=null">
+                isDeleted=#{isDeleted},
+            </if>
+            <if test="combo != null">
+                comboId=#{combo.comboId},
+            </if>
+            <if test="foodItem != null">
+                  foodItemId=#{foodItem.foodItemId}
+            </if>
+        </set>
+        where orderId = #{order.orderId}
+    </update>
+</mapper>

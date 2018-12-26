@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.FavoriteDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.Favorite">
+
+        <id column="favoriteId" property="favoriteId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+       <association column="customerId" property="customerId"
+                     select="com.xiaoshi.order.dao.CustomerDao.select">
+        </association>
+        <association column="storeId" property="storeId"
+                     select="com.xiaoshi.order.dao.StoreDao.select">
+        </association>
+        <association column="foodItemId" property="foodItemId"
+                     select="com.xiaoshi.order.dao.FoodItemDao.select">
+        </association>
+        <association column="comboTemplateId" property="comboTemplateId"
+                     select="com.xiaoshi.order.dao.ComboTemplateDao.select">
+        </association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select *
+      from favorite where favoriteId = #{id}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select *
+      from favorite
+    </select>
+
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.Favorite"
+            keyProperty="favoriteId">
+        insert into favorite
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="customerId != null">
+                customerId,
+            </if>
+            <if test="storeId != null">
+                storeId,
+            </if>
+            <if test="foodItemId != null">
+                foodItemId,
+            </if>
+            <if test="comboTemplateId != null">
+                comboTemplateId,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="customerId != null">
+                #{customerId.customerId},
+            </if>
+            <if test="storeId != null">
+                #{storeId.storeId},
+            </if>
+            <if test="foodItemId != null">
+                #{foodItemId.foodItemId},
+            </if>
+            <if test="comboTemplateId != null">
+                #{comboTemplateId.comboTemplateId},
+            </if>
+
+        </trim>
+    </insert>
+
+    <delete id="deleteFavorite" parameterType="java.util.Map"  >
+        delete from favorite where 1=1
+        <if test="customerId!=null">
+            and customerId=#{customerId}
+        </if>
+        <if test="storeId!=null">
+            and storeId=#{storeId}
+        </if>
+        <if test="foodItemId!=null">
+            and foodItemId=#{foodItemId}
+        </if>
+        <if test="comboTemplateId!=null">
+            and comboTemplateId=#{comboTemplateId}
+        </if>
+    </delete>
+
+    <select id="getFavoriteByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from favorite where 1=1
+        <if test="customerId!=null">
+            and customerId=#{customerId}
+        </if>
+        <if test="storeId!=null">
+            and storeId=#{storeId}
+        </if>
+        <if test="foodItemId!=null">
+            and foodItemId=#{foodItemId}
+        </if>
+        <if test="comboTemplateId!=null">
+            and comboTemplateId=#{comboTemplateId}
+        </if>
+    </select>
+
+    <update id="updateFavorite" parameterType="com.xiaoshi.order.pojo.entity.Favorite">
+         update favorite
+        <set>
+            <if test="customerId != null">
+                customerId=#{customerId.customerId},
+            </if>
+            <if test="storeId != null">
+                storeId= #{storeId.storeId},
+            </if>
+            <if test="foodItemId != null">
+                foodItemId= #{foodItemId.foodItemId},
+            </if>
+            <if test="comboTemplateId != null">
+                comboTemplateId= #{comboTemplateId.comboTemplateId},
+            </if>
+        </set>
+        where favoriteId = #{favoriteId}
+    </update>
+</mapper>

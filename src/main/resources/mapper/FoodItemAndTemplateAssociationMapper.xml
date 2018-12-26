@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.FoodItemAndTemplateAssociationDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.FoodItemAndTemplateAssociation">
+
+        <association column="foodItemId" property="foodItem"
+                     select="com.xiaoshi.order.dao.FoodItemDao.select">
+        </association>
+        <association column="foodItemTemplateId" property="foodItemTemplate"
+                     select="com.xiaoshi.order.dao.FoodItemTemplateDao.select">
+        </association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select *
+      from fooditemandtemplateassociation where foodItemTemplateId = #{id}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select * from fooditemandtemplateassociation
+    </select>
+
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.FoodItemAndTemplateAssociation"
+            keyProperty="foodItemTemplateId">
+        insert into fooditemandtemplateassociation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="foodItem != null">
+                foodItemId,
+            </if>
+            <if test="foodItemTemplate != null">
+                foodItemTemplateId,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="foodItem != null">
+                #{foodItem.foodItemId},
+            </if>
+            <if test="foodItemTemplate != null">
+                #{foodItemTemplate.foodItemTemplateId},
+            </if>
+
+        </trim>
+    </insert>
+
+    <select id="getFoodItemAndTemplateAssociationByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from fooditemandtemplateassociation where 1=1
+        <if test="foodItemTemplateName != null">
+           and foodItemTemplateId= #{foodItemTemplateId},
+        </if>
+        <if test="foodItemId != null">
+            and foodItemId= #{foodItemId},
+        </if>
+
+    </select>
+
+    <update id="updateFoodItemAndTemplateAssociation" parameterType="com.xiaoshi.order.pojo.entity.FoodItemAndTemplateAssociation">
+         update fooditemandtemplateassociation
+        <set>
+            <if test="foodItem != null">
+                foodItemId=#{foodItem.foodItemId},
+            </if>
+            <if test="foodItemTemplate != null">
+                foodItemTemplateId= #{foodItemTemplate.foodItemTemplateId},
+            </if>
+        </set>
+        where foodItemTemplateId = #{foodItemTemplateId}
+    </update>
+</mapper>

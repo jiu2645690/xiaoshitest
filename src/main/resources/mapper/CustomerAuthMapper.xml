@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.order.dao.CustomerAuthDao">
+
+    <resultMap id="baseResultMap" type="com.xiaoshi.order.pojo.entity.CustomerAuth">
+
+        <id column="customerAuthId" property="customerAuthId" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="customerSecretkey" property="customerSecretkey" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="password" property="password" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="allowLogin" property="allowLogin" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="createdAt" property="createdAt" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+        <association column="customerId" property="customer"
+                     select="com.xiaoshi.order.dao.CustomerDao.select">
+        </association>
+    </resultMap>
+
+    <select id="select" resultMap="baseResultMap" parameterType="java.lang.Long">
+      select customerAuthId, customerId, customerSecretkey, password, createdAt, allowLogin
+      from customerauth where customerAuthId = #{customerAuthId}
+    </select>
+
+    <select id="selectList" resultMap="baseResultMap">
+      select *
+      from customerauth
+    </select>
+
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.xiaoshi.order.pojo.entity.CustomerAuth"
+            keyProperty="customerAuthId">
+        insert into customerauth
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="customerSecretkey != null">
+                customerSecretkey,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="allowLogin != null">
+                allowLogin,
+            </if>
+            <if test="createdAt != null">
+                createdAt,
+            </if>
+            <if test="customer != null">
+                customerId,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="customerSecretkey != null">
+                #{customerSecretkey},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="allowLogin != null">
+                #{allowLogin},
+            </if>
+            <if test="createdAt != null">
+                #{createdAt},
+            </if>
+            <if test="customer != null">
+                #{customer.customerId},
+            </if>
+
+        </trim>
+    </insert>
+    <select id="getCustomerByParameter" parameterType="java.lang.Long" resultMap="baseResultMap">
+        select a.* from customerauth a,customer b where b.customerId = a.customerId
+            and b.customerId=#{id}
+    </select>
+    <select id="getCustomerAuthByParameter" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from customerauth where 1=1
+    </select>
+
+    <update id="updateCustomerAuth" parameterType="com.xiaoshi.order.pojo.entity.CustomerAuth">
+         update customerauth
+        <set>
+            <if test="customer!=null">
+                customerId=#{customer.customerId},
+            </if>
+            <if test="customerSecretkey!=null">
+                customerSecretkey=#{customerSecretkey},
+            </if>
+            <if test="password!=null">
+                password=#{password},
+            </if>
+            <if test="createdAt!=null">
+                createdAt=#{createdAt},
+            </if>
+            <if test="allowLogin!=null">
+                allowLogin=#{allowLogin},
+            </if>
+        </set>
+        where customerAuthId = #{customerAuthId}
+    </update>
+</mapper>
